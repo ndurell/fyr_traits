@@ -76,11 +76,12 @@ fn main() {
     let clara = Cow { name: "Clara".to_string() };
     clara.make_noise();
 
+    let i: i32 = 32;
+    println!("{}", i.summarize());
+
     // static dispatch: rust generates code for each type
     make_animal_noise(&pangy);
     make_animal_noise(&clara);
-
-    clara.make_noise();
 
     let managerie = Managerie { animals: vec!(Box::new(pangy), Box::new(clara)) };
     managerie.animals[0].make_noise();

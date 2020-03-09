@@ -23,8 +23,12 @@ trait Debug {
 }
 
 #[derive(Debug)]
+struct NotDebug {}
+
+#[derive(Debug)]
 struct Cow {
-    name: String
+    name: String,
+    not_debuggable: NotDebug
 }
 
 // Default trait
@@ -60,7 +64,7 @@ trait Clone : Sized {
 
 // The Copy trait
 // This is a marker trait
-// Notice though it is a super type of Copy.
+// Notice though that to be a Copy means you are required to be a Clone.
 trait Copy: Clone { }
 
 // Copy has no methods to implement but it can be derived
@@ -72,9 +76,12 @@ struct Person {
     age: i32
 }
 
+// Other cool marker traits Sync/Send.
+// These traits help the compiler know a type is thread safe.
+
 fn main() {
-    // using ToString
-    let i = 5;
+    // using ToString via Display
+    let i: i32 = 5;
     println!("I like {}", i.to_string());
 
     // Display usage
@@ -82,8 +89,9 @@ fn main() {
     println!("I like to display {}", i);
 
     // Debug usage
-    let bessie = Cow { name: "Bessie".to_string() };
+    let bessie = Cow { name: "Bessie".to_string(), not_debuggable: NotDebug {} };
     println!("DEBUG: {:?}", bessie);
+    dbg!(bessie);
 
     // Default usage
     let point = Point::default();
@@ -94,12 +102,18 @@ fn main() {
     let reg_str = "Eric";
     let from_str = String::from(reg_str);
     println!("Hi {}!", from_str);
-    let into_str: String = reg_str.into();
+    let mut into_str: String = from_str.into();
     println!("Hi again {}!", into_str);
 
+    // Clone
+    let clone_str = into_str.clone(); 
+    into_str.push_str(" is cool!");
+    println!("into_str {}", into_str); // prints into_str Eric is cool! 
+    println!("clone_str {}", clone_str); // prints clone_str Eric
+
     let eric = Person { age: 26 };
-    let eric_clone = eric;
-    // eric_clone is a copy of eric.
+    let eric_copy = eric;
+    // eric_copy is a copy of eric.
     println!("eric {:?}", eric) // this is ok.
 
 }
