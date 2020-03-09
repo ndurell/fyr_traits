@@ -53,11 +53,21 @@ trait Into<T> {
 
 // The Clone trait
 // provides a method to clone an object
+// can be derived as well.
 trait Clone : Sized {
     fn clone(&self) -> Self;
 }
 
-#[derive(Clone)]
+// The Copy trait
+// This is a marker trait
+// Notice though it is a super type of Copy.
+trait Copy: Clone { }
+
+// Copy has no methods to implement but it can be derived
+// Indicates that the object can be copied by just moving the bits
+
+// Must implement both Copy and Clone since clone is a super type.
+#[derive(Debug,Copy,Clone)]
 struct Person {
     age: i32
 }
@@ -85,6 +95,11 @@ fn main() {
     let from_str = String::from(reg_str);
     println!("Hi {}!", from_str);
     let into_str: String = reg_str.into();
-    println!("Hi again {}!", into_str)
+    println!("Hi again {}!", into_str);
+
+    let eric = Person { age: 26 };
+    let eric_clone = eric;
+    // eric_clone is a copy of eric.
+    println!("eric {:?}", eric) // this is ok.
 
 }
